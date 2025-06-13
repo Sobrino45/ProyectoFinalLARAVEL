@@ -7,9 +7,15 @@ use Illuminate\Http\Request;
 
 class TareaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tareas = Tarea::orderBy('created_at', 'desc')->paginate(10);
+        $query = Tarea::query();
+
+        if ($request->has('estado') && $request->estado !== '') {
+            $query->where('estado', $request->estado);
+        }
+
+        $tareas = $query->orderBy('created_at', 'desc')->paginate(10);
         return view('tareas.index', compact('tareas'));
     }
 
@@ -23,11 +29,8 @@ class TareaController extends Controller
         $validated = $request->validate([
             'titulo' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'estado' => 'sometimes|boolean',
+            'estado' => 'required|boolean',
         ]);
-
-        // El checkbox no envía nada si no está marcado, así que normalizamos:
-        $validated['estado'] = $request->has('estado');
 
         Tarea::create($validated);
 
@@ -50,10 +53,8 @@ class TareaController extends Controller
         $validated = $request->validate([
             'titulo' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'estado' => 'sometimes|boolean',
+            'estado' => 'required|boolean',
         ]);
-
-        $validated['estado'] = $request->has('estado');
 
         $tarea->update($validated);
 

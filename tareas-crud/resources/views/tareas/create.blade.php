@@ -26,8 +26,10 @@
             <textarea name="descripcion" id="descripcion" class="form-control">{{ old('descripcion') }}</textarea>
         </div>
 
+        <!-- Solución para checkbox: siempre se envía estado, 0 o 1 -->
         <div class="form-check mb-3">
-            <input type="checkbox" name="estado" id="estado" class="form-check-input" {{ old('estado') ? 'checked' : '' }}>
+            <input type="hidden" name="estado" value="0">
+            <input type="checkbox" name="estado" id="estado" class="form-check-input" value="1" {{ old('estado') ? 'checked' : '' }}>
             <label for="estado" class="form-check-label">Completada</label>
         </div>
 

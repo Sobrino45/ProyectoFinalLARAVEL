@@ -9,6 +9,15 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
+    <form method="GET" action="{{ route('tareas.index') }}" class="mb-3">
+        <select name="estado" onchange="this.form.submit()" class="form-select w-auto d-inline-block">
+            <option value="">Todas</option>
+            <option value="1" {{ request('estado') === '1' ? 'selected' : '' }}>Completadas</option>
+            <option value="0" {{ request('estado') === '0' ? 'selected' : '' }}>Pendientes</option>
+        </select>
+    </form>
+
+
     @if($tareas->count())
         <table class="table table-bordered">
             <thead>

@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('titulo');
             $table->text('descripcion')->nullable();
-            $table->boolean('estado')->default(false);
+            $table->boolean('estado')->default(false); // campo necesario
             $table->timestamps();
         });
     }

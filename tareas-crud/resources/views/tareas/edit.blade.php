@@ -28,8 +28,11 @@
             <textarea name="descripcion" id="descripcion" class="form-control">{{ old('descripcion', $tarea->descripcion) }}</textarea>
         </div>
 
+        <!-- SOLUCIÓN -->
         <div class="form-check mb-3">
-            <input type="checkbox" name="estado" id="estado" class="form-check-input" {{ old('estado', $tarea->estado) ? 'checked' : '' }}>
+            <input type="hidden" name="estado" value="0">
+            <input type="checkbox" name="estado" id="estado" class="form-check-input" value="1" 
+                {{ old('estado', $tarea->estado) ? 'checked' : '' }}>
             <label for="estado" class="form-check-label">Completada</label>
         </div>
 
