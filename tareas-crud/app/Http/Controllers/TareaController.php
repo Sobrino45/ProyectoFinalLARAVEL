@@ -11,11 +11,12 @@ class TareaController extends Controller
     {
         $query = Tarea::query();
 
+        // Filtro por estado
         if ($request->has('estado') && $request->estado !== '') {
             $query->where('estado', $request->estado);
         }
 
-        $tareas = $query->orderBy('created_at', 'desc')->paginate(10);
+        $tareas = $query->orderBy('created_at', 'desc')->get(); // He quitado paginate por ahora para que el diseño grid se vea completo
         return view('tareas.index', compact('tareas'));
     }
 
@@ -26,21 +27,20 @@ class TareaController extends Controller
 
     public function store(Request $request)
     {
+        // 1. Validamos solo lo que viene del formulario
         $validated = $request->validate([
             'titulo' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'estado' => 'required|boolean',
         ]);
 
+        // 2. Añadimos el estado manualmente (por defecto pendiente)
+        $validated['estado'] = false; 
+
+        // 3. Creamos la tarea
         Tarea::create($validated);
 
         return redirect()->route('tareas.index')
-            ->with('success', 'Tarea creada correctamente');
-    }
-
-    public function show(Tarea $tarea)
-    {
-        return view('tareas.show', compact('tarea'));
+            ->with('success', '¡Objetivo guardado con éxito!');
     }
 
     public function edit(Tarea $tarea)
@@ -53,7 +53,7 @@ class TareaController extends Controller
         $validated = $request->validate([
             'titulo' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'estado' => 'required|boolean',
+            'estado' => 'required|boolean', // En editar sí suele venir el estado
         ]);
 
         $tarea->update($validated);
